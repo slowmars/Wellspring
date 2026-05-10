@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import OutboundRecord, new_uuid
+from ..models import OutboundRecord
 from ..schemas import OutboundCreate, OutboundOut
 from ..deps import require_auth
 
@@ -16,7 +16,7 @@ def create_outbound(
     user: dict = Depends(require_auth),
 ):
     record = OutboundRecord(
-        id=new_uuid(),
+        id=(),
         outbound_person=data.outbound_person,
         category=data.category,
         quantity=data.quantity,

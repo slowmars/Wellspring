@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 import random
 from .database import SessionLocal
-from .models import Category, DonationItem, OutboundRecord, new_uuid
+from .models import Category, DonationItem, OutboundRecord
 
 CATEGORIES = [
     ("hygiene", "Hygiene", 5),
@@ -58,7 +58,7 @@ def seed_demo_data(db):
         if cat == "hygiene":
             qty = random.randint(1, 3)
         db.add(DonationItem(
-            id=new_uuid(),
+            
             intake_time=now - timedelta(days=days_ago, hours=random.randint(0, 12)),
             intake_person=random.choice(DEMO_NAMES_IN),
             category=cat,
@@ -75,7 +75,7 @@ def seed_demo_data(db):
         if cat == "hygiene":
             qty = random.randint(5, 15)
         db.add(OutboundRecord(
-            id=new_uuid(),
+            
             outbound_time=now - timedelta(days=days_ago, hours=random.randint(0, 12)),
             outbound_person=random.choice(DEMO_NAMES_OUT),
             category=cat,

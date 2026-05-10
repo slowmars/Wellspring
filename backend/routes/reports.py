@@ -132,3 +132,70 @@ def export_csv(
         media_type="text/csv",
         headers={"Content-Disposition": f"attachment; filename=goodsflow_{type}.csv"},
     )
+
+from datetime import datetime, timedelta
+
+@router.get("/activity")
+def get_recent_activity(
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_auth)
+):
+    """Get recent activity for Care Timeline - frontend compatible."""
+    from ..models import DonationItem, OutboundRecord
+    
+    # Get recent intakes
+    recent_intakes = db.query(DonationItem).order_by(
+        DonationItem.intake_time.desc()
+    ).limit(limit).all()
+    
+    # Get recent outbounds
+    recent_outbounds = db.query(OutboundRecord).order_by(
+        OutboundRecord.outbound_time.desc()
+    ).limit(limit).all()
+    
+    # Combine and format for frontend
+    events = []
+    
+    for intake in recent_intakes:
+        item_desc = intake.item_name if intake.item_name else intake.category
+        events.append({
+            "id": f"i{intake.id}",
+            "type": "donation",
+            "title": f"{intake.quantity} {item_desc} added",
+            "detail": f"Logged by {intake.intake_person}" + (f" · {intake.donor}" if intake.donor else ""),
+            "time": format_time_ago(intake.intake_time),
+            "timestamp": intake.intake_time.isoformat()
+        })
+    
+    for outbound in recent_outbounds:
+        events.append({
+            "id": f"o{outbound.id}",
+            "type": "distribution",
+            "title": f"{outbound.quantity} {outbound.category} distributed",
+            "detail": f"Logged by {outbound.outbound_person}",
+            "time": format_time_ago(outbound.outbound_time),
+            "timestamp": outbound.outbound_time.isoformat()
+        })
+    
+    # Sort by timestamp, most recent first
+    events.sort(key=lambda x: x["timestamp"], reverse=True)
+    
+    return events[:limit]
+
+def format_time_ago(dt: datetime) -> str:
+    """Format datetime as '5 min ago', '2 hr ago', etc."""
+    now = datetime.utcnow()
+    diff = now - dt
+    
+    if diff < timedelta(minutes=1):
+        return "Just now"
+    elif diff < timedelta(hours=1):
+        mins = int(diff.total_seconds() / 60)
+        return f"{mins} min ago"
+    elif diff < timedelta(days=1):
+        hours = int(diff.total_seconds() / 3600)
+        return f"{hours} hr ago"
+    else:
+        days = diff.days
+        return f"{days} day{'s' if days > 1 else ''} ago"

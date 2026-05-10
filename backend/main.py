@@ -61,11 +61,19 @@ def health_check():
 # ============================================================
 # CATEGORIES ENDPOINT (public, no auth)
 # ============================================================
+# Old categories endpoint
 @app.get("/api/categories")
 def list_categories(db: Session = Depends(get_db)):
-    """Get all donation categories"""
+    """Get all donation categories - frontend compatible format"""
     cats = db.query(Category).all()
-    return [{"name": c.name, "display_name": c.display_name} for c in cats]
+    return [
+        {
+            "key": c.name,              # Frontend uses 'key'
+            "label": c.display_name,    # Frontend uses 'label'
+            "name": c.name              # Also keep 'name' for compatibility
+        }
+        for c in cats
+    ]
 
 
 # ============================================================
