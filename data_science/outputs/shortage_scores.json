@@ -1,0 +1,20 @@
+[
+  {
+    "category": "hygiene",
+    "display_name": "Hygiene",
+    "score": 8.7,
+    "urgency": "critical",
+    "deficit_14d": 35,
+    "burn_rate_per_day": 4.2,
+    "days_until_empty": 3
+  },
+  {
+    "category": "clothing",
+    "display_name": "Clothing",
+    "score": 2.1,
+    "urgency": "low",
+    "deficit_14d": -12,
+    "burn_rate_per_day": 1.5,
+    "days_until_empty": null
+  }
+]

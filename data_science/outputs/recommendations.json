@@ -1,0 +1,16 @@
+[
+  {
+    "category": "hygiene",
+    "action": "Request 50+ items ASAP",
+    "reason": "Outbound exceeds intake by 35 units in last 14 days. At current burn rate, stock depletes in 3 days.",
+    "priority": 1,
+    "confidence": 0.92
+  },
+  {
+    "category": "food",
+    "action": "No immediate action needed",
+    "reason": "Stock levels healthy",
+    "priority": 3,
+    "confidence": 0.88
+  }
+]

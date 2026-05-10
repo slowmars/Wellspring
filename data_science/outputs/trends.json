@@ -1,0 +1,12 @@
+[
+  {
+    "category": "hygiene",
+    "trend": "decreasing",
+    "change_pct": -12.5
+  },
+  {
+    "category": "food",
+    "trend": "increasing",
+    "change_pct": 8.3
+  }
+]
