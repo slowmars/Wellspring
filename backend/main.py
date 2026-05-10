@@ -37,15 +37,11 @@ ALLOWED_ORIGINS = [
     # "https://goodsflow.vercel.app",
 ]
 
+# CORS - Allow all Vercel preview URLs for hackathon
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:8000",
-        "https://v0-wellspring-frontend.vercel.app",
-        "https://wellspring-5ha3.onrender.com"
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],  # Temporarily allow all for hackathon speed
+    allow_credentials=False,  # Must be False when using allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
