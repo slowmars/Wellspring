@@ -39,7 +39,12 @@ ALLOWED_ORIGINS = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For hackathon speed; tighten in production
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:8000",
+        "https://v0-wellspring-frontend.vercel.app",
+        "https://wellspring-5ha3.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
