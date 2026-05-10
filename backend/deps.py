@@ -35,3 +35,14 @@ def require_staff(x_auth_token: str = Header(..., alias="X-Auth-Token")) -> dict
     if data.get("role") != "staff":
         raise HTTPException(status_code=403, detail="Staff access required")
     return data
+
+from sqlalchemy.orm import Session
+from .database import SessionLocal
+
+def get_db():
+    """Dependency to get database session."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
